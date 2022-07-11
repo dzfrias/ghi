@@ -35,20 +35,24 @@ func main() {
 
 // list() lists the issues with an optional query
 func list(ctx *cli.Context) error {
-	var result []*issues.Issue
+	var result *issues.IssuesSearchResult
 	var err error
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
 		result, err = issues.SearchIssues(repoQuery() + " is:open")
 	} else {
-		result, err = issues.SearchIssues(strings.Join(ctx.Args().Slice(), " "))
+		result, err = issues.SearchIssues(
+			strings.Join(ctx.Args().Slice(), " "))
 	}
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%d issues:\n", len(result))
-	for _, item := range result {
+	fmt.Printf("%d issues:\n", result.TotalCount)
+	for _, item := range result.Items {
 		fmt.Printf("#%-5d %9.9s %.55s\n",
 			item.Number, item.User.Login, item.Title)
+	}
+	if len(result.Items) < result.TotalCount {
+		fmt.Println("(Showing issues 1-20)")
 	}
 
 	return nil

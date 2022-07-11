@@ -14,10 +14,11 @@ import (
 )
 
 // SearchIssues queries the GitHub issue tracker.
-func SearchIssues(term string) ([]*Issue, error) {
+func SearchIssues(term string) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(term)
 
-	req, err := http.NewRequest("GET", IssuesURL+"?q="+q, nil)
+	reqUrl := IssuesURL + "?q=" + q + "&per_page=20"
+	req, err := http.NewRequest("GET", reqUrl, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -37,9 +38,9 @@ func SearchIssues(term string) ([]*Issue, error) {
 		return nil, fmt.Errorf("search query failed: %s", resp.Status)
 	}
 
-	var result struct{ Items []*Issue }
+	var result IssuesSearchResult
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
 	}
-	return result.Items, nil
+	return &result, nil
 }

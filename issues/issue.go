@@ -27,3 +27,8 @@ type User struct {
 	Login   string
 	HTMLURL string `json:"html_url"`
 }
+
+type IssuesSearchResult struct {
+	TotalCount int `json:"total_count"`
+	Items      []*Issue
+}
