@@ -28,6 +28,7 @@ func init() {
 	if err != nil {
 		log.Fatalln("Could not get user home dir")
 	}
+	// Path to user's credentials
 	configPath = path.Join(home, ".config", "ghi", "config")
 }
 
@@ -66,6 +67,7 @@ func Auth(ctx *cli.Context) error {
 	return nil
 }
 
+// postParse sends a POST request and parses the query response as key-value pairs
 func postParse(s string, data url.Values) (url.Values, error) {
 	resp, err := http.PostForm(s, data)
 	if err != nil {
@@ -76,14 +78,15 @@ func postParse(s string, data url.Values) (url.Values, error) {
 		return nil, fmt.Errorf("login request failed: %s", resp.Status)
 	}
 
-	vals, err := parseUrl(resp.Body)
+	vals, err := parseQuery(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 	return vals, nil
 }
 
-func parseUrl(r io.ReadCloser) (url.Values, error) {
+// parseQuery returns a map of key-value pairs in a url query
+func parseQuery(r io.ReadCloser) (url.Values, error) {
 	b, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
@@ -96,6 +99,7 @@ func parseUrl(r io.ReadCloser) (url.Values, error) {
 	return u, nil
 }
 
+// poll requests for the user's access token at the given interval (seconds)
 func poll(i int, code string) (url.Values, error) {
 	const pollUrl = "https://github.com/login/oauth/access_token"
 	const grantType = "urn:ietf:params:oauth:grant-type:device_code"
@@ -116,6 +120,7 @@ func poll(i int, code string) (url.Values, error) {
 	}
 }
 
+// store stores the given credentials in ~/.config/ghi/config
 func store(creds string) error {
 	conDir := filepath.Dir(configPath)
 	if err := os.MkdirAll(conDir, os.ModePerm); err != nil {
@@ -148,6 +153,7 @@ func GetCreds() (string, error) {
 	return strings.TrimSpace(string(creds)), err
 }
 
+// credsExist checks if the user's credentials file exists
 func credsExist() bool {
 	if _, err := os.Stat(configPath); errors.Is(err, os.ErrNotExist) {
 		return false
