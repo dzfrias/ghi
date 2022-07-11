@@ -14,14 +14,16 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "ghi",
-		Usage: "Interact with GitHub Issues from the command line",
+		Name:      "ghi",
+		Usage:     "Interact with GitHub Issues from the command line",
+		UsageText: "ghi [global options] <command> [command options] [arguments...]",
 		Commands: []*cli.Command{
 			{
-				Name:    "list",
-				Aliases: []string{"l"},
-				Usage:   "Lists issues",
-				Action:  list,
+				Name:      "list",
+				Aliases:   []string{"l"},
+				Usage:     "Lists issues",
+				UsageText: "ghi list [command options] [search terms...]",
+				Action:    list,
 			},
 		},
 	}
