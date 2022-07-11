@@ -24,6 +24,14 @@ func main() {
 				Usage:     "Lists issues",
 				UsageText: "ghi list [command options] [search terms...]",
 				Action:    list,
+				Flags: []cli.Flag{
+					&cli.IntFlag{
+						Name:    "page",
+						Aliases: []string{"p"},
+						Value:   1,
+						Usage:   "Page of results",
+					},
+				},
 			},
 		},
 	}
@@ -37,11 +45,13 @@ func main() {
 func list(ctx *cli.Context) error {
 	var result *issues.IssuesSearchResult
 	var err error
+
+	page := ctx.Int("page")
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
-		result, err = issues.SearchIssues(repoQuery() + " is:open")
+		result, err = issues.SearchIssues(repoQuery()+" is:open", page)
 	} else {
 		result, err = issues.SearchIssues(
-			strings.Join(ctx.Args().Slice(), " "))
+			strings.Join(ctx.Args().Slice(), " "), page)
 	}
 	if err != nil {
 		return err
@@ -52,7 +62,8 @@ func list(ctx *cli.Context) error {
 			item.Number, item.User.Login, item.Title)
 	}
 	if len(result.Items) < result.TotalCount {
-		fmt.Println("(Showing issues 1-20)")
+		issNum := (20 * (page - 1)) + 1
+		fmt.Printf("(Showing issues %d-%d)\n", issNum, issNum+19)
 	}
 
 	return nil

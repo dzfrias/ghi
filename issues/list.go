@@ -11,13 +11,14 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 // SearchIssues queries the GitHub issue tracker.
-func SearchIssues(term string) (*IssuesSearchResult, error) {
+func SearchIssues(term string, page int) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(term)
 
-	reqUrl := IssuesURL + "?q=" + q + "&per_page=20"
+	reqUrl := IssuesURL + "?q=" + q + "&per_page=20&page=" + strconv.Itoa(page)
 	req, err := http.NewRequest("GET", reqUrl, nil)
 	if err != nil {
 		return nil, err
