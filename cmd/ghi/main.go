@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/dzfrias/ghi/issues"
+	"github.com/dzfrias/ghi/pkg/commands"
 	"github.com/urfave/cli/v2"
 )
 
@@ -20,7 +20,7 @@ func main() {
 				Aliases:   []string{"l"},
 				Usage:     "Lists issues",
 				ArgsUsage: "[search terms...]",
-				Action:    list,
+				Action:    commands.List,
 				Flags: []cli.Flag{
 					&cli.IntFlag{
 						Name:    "page",
@@ -34,7 +34,7 @@ func main() {
 				Name:      "login",
 				Usage:     "Brings up login to have advanced options",
 				UsageText: "ghi login [command options]",
-				Action:    issues.Auth,
+				Action:    commands.Login,
 			},
 		},
 	}

@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"fmt"
@@ -6,20 +6,20 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/dzfrias/ghi/issues"
+	"github.com/dzfrias/ghi/pkg/issues"
 	"github.com/urfave/cli/v2"
 )
 
-// list lists the issues with an optional query
-func list(ctx *cli.Context) error {
+// List lists the issues with an optional query
+func List(ctx *cli.Context) error {
 	var result *issues.IssuesSearchResult
 	var err error
 
 	page := ctx.Int("page")
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
-		result, err = issues.SearchIssues(repoQuery()+" is:open", page)
+		result, err = issues.Search(repoQuery()+" is:open", page)
 	} else {
-		result, err = issues.SearchIssues(
+		result, err = issues.Search(
 			strings.Join(ctx.Args().Slice(), " "), page)
 	}
 	if err != nil {

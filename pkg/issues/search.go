@@ -15,7 +15,7 @@ import (
 )
 
 // SearchIssues queries the GitHub issue tracker.
-func SearchIssues(term string, page int) (*IssuesSearchResult, error) {
+func Search(term string, page int) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(term)
 
 	reqUrl := IssuesURL + "?q=" + q + "&per_page=20&page=" + strconv.Itoa(page)
