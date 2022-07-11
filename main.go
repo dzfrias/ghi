@@ -61,12 +61,18 @@ func repoQuery() string {
 		return ""
 	}
 
-	_, err = exec.Command("sh", "-c", fmt.Sprintf("cd %s; git status", pwd)).Output()
+	_, err = exec.Command(
+		"sh", "-c", fmt.Sprintf("cd %s; git status", pwd),
+	).Output()
 	if err != nil {
 		return ""
 	}
 
-	ori, err := exec.Command("sh", "-c", fmt.Sprintf("cd %s; git config --get remote.origin.url", pwd)).Output()
+	ori, err := exec.Command(
+		"sh",
+		"-c",
+		fmt.Sprintf("cd %s; git config --get remote.origin.url", pwd),
+	).Output()
 	if err != nil {
 		return ""
 	}
