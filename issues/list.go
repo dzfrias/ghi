@@ -11,12 +11,11 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 // SearchIssues queries the GitHub issue tracker.
-func SearchIssues(terms []string) ([]*Issue, error) {
-	q := url.QueryEscape(strings.Join(terms, " "))
+func SearchIssues(term string) ([]*Issue, error) {
+	q := url.QueryEscape(term)
 
 	req, err := http.NewRequest("GET", IssuesURL+"?q="+q, nil)
 	if err != nil {

@@ -20,16 +20,8 @@ func main() {
 			{
 				Name:    "list",
 				Aliases: []string{"l"},
-				Usage:   "List issues",
+				Usage:   "Lists issues",
 				Action:  list,
-				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:    "query",
-						Aliases: []string{"q"},
-						Usage:   "Search using `TERMS`",
-						Value:   currentRepo() + " is:open",
-					},
-				},
 			},
 		},
 	}
@@ -39,8 +31,15 @@ func main() {
 	}
 }
 
+// list() lists the issues with an optional query
 func list(ctx *cli.Context) error {
-	result, err := issues.SearchIssues(strings.Split(ctx.String("q"), " "))
+	var result []*issues.Issue
+	var err error
+	if arg1 := ctx.Args().Get(0); arg1 == "" {
+		result, err = issues.SearchIssues(repoQuery() + " is:open")
+	} else {
+		result, err = issues.SearchIssues(strings.Join(ctx.Args().Slice(), " "))
+	}
 	if err != nil {
 		return err
 	}
@@ -53,7 +52,8 @@ func list(ctx *cli.Context) error {
 	return nil
 }
 
-func currentRepo() string {
+// repoQuery() gets the current repo and puts it into the query format
+func repoQuery() string {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return ""
