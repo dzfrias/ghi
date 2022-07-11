@@ -1,5 +1,4 @@
-// Package auth handles authentication for the user
-package auth
+package issues
 
 import (
 	"errors"

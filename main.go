@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/dzfrias/ghi/auth"
+	"github.com/dzfrias/ghi/issues"
 	"github.com/urfave/cli/v2"
 )
 
@@ -34,7 +34,7 @@ func main() {
 				Name:      "login",
 				Usage:     "Brings up login to have advanced options",
 				UsageText: "ghi login [command options]",
-				Action:    auth.Auth,
+				Action:    issues.Auth,
 			},
 		},
 	}

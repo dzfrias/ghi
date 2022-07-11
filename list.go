@@ -10,7 +10,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// list() lists the issues with an optional query
+// list lists the issues with an optional query
 func list(ctx *cli.Context) error {
 	var result *issues.IssuesSearchResult
 	var err error
@@ -38,7 +38,7 @@ func list(ctx *cli.Context) error {
 	return nil
 }
 
-// repoQuery() gets the current repo and puts it into the query format
+// repoQuery gets the current repo and puts it into the query format
 func repoQuery() string {
 	pwd, err := os.Getwd()
 	if err != nil {
