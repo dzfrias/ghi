@@ -7,28 +7,14 @@ import (
 
 const credsFile = "./TestCreds.txt"
 
-func setupCreds(t *testing.T) {
-	f, err := os.Create(credsFile)
-	if err != nil {
-		t.Error("setupCreds() failed")
-	}
-	defer f.Close()
-	_, err = f.WriteString("testing")
-	if err != nil {
-		t.Error("setupCreds() failed")
-	}
-}
-
 func TestGetCreds(t *testing.T) {
-	setupCreds(t)
-	creds, err := GetCreds(credsFile)
+	creds, err := GetCreds("./testdata/TestCreds.txt")
 	if creds != "testing" {
 		t.Error(`GetCreds(credsFile) != "testing"`)
 	}
 	if err != nil {
 		t.Error(`GetCreds(credsFile) returns error`)
 	}
-	os.Remove(credsFile)
 }
 
 func TestGetCredsNoneExist(t *testing.T) {
