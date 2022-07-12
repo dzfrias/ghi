@@ -38,8 +38,8 @@ func List(ctx *cli.Context) error {
 	return nil
 }
 
-// repoQuery gets the current repo and puts it into the query format
-func repoQuery() string {
+// currentRepo gets the current repo and puts it into the query format
+func currentRepo() string {
 	pwd, err := os.Getwd()
 	if err != nil {
 		return ""

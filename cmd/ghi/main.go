@@ -1,4 +1,4 @@
-// Ghi interacts with GitHub Issues
+// Ghi interacts with GitHub Issues from the command line
 package main
 
 import (
