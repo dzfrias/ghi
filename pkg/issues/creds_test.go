@@ -20,13 +20,13 @@ func TestGetCreds(t *testing.T) {
 func TestGetCredsNoneExist(t *testing.T) {
 	const target = "no credentials. Run `ghi auth` to access this feature"
 	_, err := GetCreds(credsFile)
-	assert.Equal(t, err.Error(), target, "No credsFile does not throw error")
+	assert.Equal(t, err.Error(), target, "no credsFile does not throw error")
 }
 
 func TestStoreCredsNoConfigDir(t *testing.T) {
 	const newCreds = "./.config/ghi/TestCreds.txt"
 	err := StoreCreds("testing", newCreds)
-	assert.Nil(t, err, "StoreCreds with no config dir throw error")
+	assert.Nil(t, err, "StoreCreds with no config dir throws error")
 	assert.Equal(t, readfile(newCreds), "testing\n")
 	os.Remove(newCreds)
 }
