@@ -71,7 +71,7 @@ func StoreCreds(creds string, loc string) error {
 
 // GetCreds gets the user's authorized credentials
 func GetCreds(fname string) (string, error) {
-	if !fExists(fname) {
+	if _, err := os.Stat(fname); errors.Is(err, os.ErrNotExist) {
 		return "", errors.New("no credentials. Run `ghi auth` to access this feature")
 	}
 
@@ -80,12 +80,4 @@ func GetCreds(fname string) (string, error) {
 		return "", err
 	}
 	return strings.TrimSpace(string(creds)), err
-}
-
-// fExists checks if a file exists
-func fExists(fname string) bool {
-	if _, err := os.Stat(fname); errors.Is(err, os.ErrNotExist) {
-		return false
-	}
-	return true
 }

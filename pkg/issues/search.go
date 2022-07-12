@@ -14,6 +14,8 @@ import (
 	"strconv"
 )
 
+var IssuesURL = "https://api.github.com/search/issues"
+
 // Search queries the GitHub issue tracker.
 func Search(term string, page int) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(term)

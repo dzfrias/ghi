@@ -11,8 +11,6 @@ import (
 	"time"
 )
 
-const IssuesURL = "https://api.github.com/search/issues"
-
 type Issue struct {
 	Number    int
 	HTMLURL   string `json:"html_url"`
