@@ -17,7 +17,7 @@ func List(ctx *cli.Context) error {
 
 	page := ctx.Int("page")
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
-		result, err = issues.Search(repoQuery()+" is:open", page)
+		result, err = issues.Search(currentRepo()+" is:open", page)
 	} else {
 		result, err = issues.Search(
 			strings.Join(ctx.Args().Slice(), " "), page)

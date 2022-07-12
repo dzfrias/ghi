@@ -35,6 +35,14 @@ func main() {
 				Usage:     "Brings up login to have advanced options",
 				UsageText: "ghi login [command options]",
 				Action:    commands.Login,
+				Flags: []cli.Flag{
+					&cli.BoolFlag{
+						Name:    "force",
+						Aliases: []string{"f"},
+						Value:   false,
+						Usage:   "Create credentials even if they already exist",
+					},
+				},
 			},
 		},
 	}
