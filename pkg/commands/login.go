@@ -23,6 +23,7 @@ func Login(ctx *cli.Context) error {
 		"scope":     {"repo"},
 	}
 
+	// Request a login and get url encoded response
 	vals, err := postutil.PostParse(loginUrl, data)
 	if err != nil {
 		return err
@@ -35,7 +36,8 @@ func Login(ctx *cli.Context) error {
 	}
 	code := vals.Get("device_code")
 
-	authInfo, err := issues.TokenPoll(i, code)
+	// Try to get auth info every i seconds
+	authInfo, err := issues.CredsPoll(i, code)
 	if err != nil {
 		return err
 	}

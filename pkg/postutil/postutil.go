@@ -19,6 +19,7 @@ func PostParse(s string, data url.Values) (url.Values, error) {
 		return nil, fmt.Errorf("login request failed: %s", resp.Status)
 	}
 
+	// Parse url encoded key-value pairs
 	vals, err := parseQuery(resp.Body)
 	if err != nil {
 		return nil, err

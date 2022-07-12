@@ -27,8 +27,8 @@ func init() {
 	configPath = path.Join(home, ".config", "ghi", "config")
 }
 
-// TokenPoll requests for the user's access token at the given interval (seconds)
-func TokenPoll(i int, code string) (url.Values, error) {
+// CredsPoll requests for the user's access token at the given interval (seconds)
+func CredsPoll(i int, code string) (url.Values, error) {
 	const pollUrl = "https://github.com/login/oauth/access_token"
 	const grantType = "urn:ietf:params:oauth:grant-type:device_code"
 	v := url.Values{
@@ -37,6 +37,7 @@ func TokenPoll(i int, code string) (url.Values, error) {
 		"grant_type":  {grantType},
 	}
 	for {
+		// Send POST request and get the url encoded response as map
 		respVals, err := postutil.PostParse(pollUrl, v)
 		if err != nil {
 			return nil, err

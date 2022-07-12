@@ -14,7 +14,7 @@ import (
 	"strconv"
 )
 
-// SearchIssues queries the GitHub issue tracker.
+// Search queries the GitHub issue tracker.
 func Search(term string, page int) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(term)
 
@@ -23,8 +23,7 @@ func Search(term string, page int) (*IssuesSearchResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set(
-		"Accept", "application/vnd.github.v3.text-match+json")
+	req.Header.Set("Accept", "application/vnd.github.v3.text-match+json")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err

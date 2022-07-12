@@ -17,6 +17,7 @@ func List(ctx *cli.Context) error {
 
 	page := ctx.Int("page")
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
+		// Default query
 		result, err = issues.Search(currentRepo()+" is:open", page)
 	} else {
 		result, err = issues.Search(
@@ -52,6 +53,7 @@ func currentRepo() string {
 		return ""
 	}
 
+	// Get origin url in cwd
 	ori, err := exec.Command(
 		"sh",
 		"-c",
@@ -63,5 +65,6 @@ func currentRepo() string {
 
 	repo := strings.TrimPrefix(string(ori), "https://github.com/")
 
+	// Strip the '.git' at the end
 	return "repo:" + repo[:len(repo)-5]
 }
