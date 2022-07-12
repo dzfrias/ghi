@@ -16,7 +16,7 @@ import (
 
 const ClientId = "3cb4616362f3ae823872"
 
-var configPath string
+var ConfigPath string
 
 func init() {
 	home, err := os.UserHomeDir()
@@ -24,7 +24,7 @@ func init() {
 		log.Fatalln("Could not get user home dir")
 	}
 	// Path to user's credentials
-	configPath = path.Join(home, ".config", "ghi", "config")
+	ConfigPath = path.Join(home, ".config", "ghi", "config")
 }
 
 // CredsPoll requests for the user's access token at the given interval (seconds)
@@ -50,13 +50,13 @@ func CredsPoll(i int, code string) (url.Values, error) {
 }
 
 // StoreCreds stores the given credentials in ~/.config/ghi/config
-func StoreCreds(creds string) error {
-	conDir := filepath.Dir(configPath)
-	if err := os.MkdirAll(conDir, os.ModePerm); err != nil {
+func StoreCreds(creds string, loc string) error {
+	locDir := filepath.Dir(loc)
+	if err := os.MkdirAll(locDir, os.ModePerm); err != nil {
 		return err
 	}
 
-	f, err := os.Create(configPath)
+	f, err := os.Create(loc)
 	if err != nil {
 		return err
 	}
@@ -70,21 +70,21 @@ func StoreCreds(creds string) error {
 }
 
 // GetCreds gets the user's authorized credentials
-func GetCreds() (string, error) {
-	if !credsExist() {
+func GetCreds(fname string) (string, error) {
+	if !fExists(fname) {
 		return "", errors.New("no credentials. Run `ghi auth` to access this feature")
 	}
 
-	creds, err := ioutil.ReadFile(configPath)
+	creds, err := ioutil.ReadFile(fname)
 	if err != nil {
 		return "", err
 	}
 	return strings.TrimSpace(string(creds)), err
 }
 
-// credsExist checks if the user's credentials file exists
-func credsExist() bool {
-	if _, err := os.Stat(configPath); errors.Is(err, os.ErrNotExist) {
+// fExists checks if a file exists
+func fExists(fname string) bool {
+	if _, err := os.Stat(fname); errors.Is(err, os.ErrNotExist) {
 		return false
 	}
 	return true

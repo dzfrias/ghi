@@ -12,7 +12,7 @@ import (
 
 // Login puts the user through the authentication process to store credentials
 func Login(ctx *cli.Context) error {
-	if _, err := issues.GetCreds(); err == nil && !ctx.Bool("force") {
+	if _, err := issues.GetCreds(issues.ConfigPath); err == nil && !ctx.Bool("force") {
 		fmt.Println("Credentials already exist.")
 		return nil
 	}
@@ -42,7 +42,7 @@ func Login(ctx *cli.Context) error {
 		return err
 	}
 
-	issues.StoreCreds(authInfo.Get("access_token"))
+	issues.StoreCreds(authInfo.Get("access_token"), issues.ConfigPath)
 
 	return nil
 }
