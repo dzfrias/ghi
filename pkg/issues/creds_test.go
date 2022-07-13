@@ -1,6 +1,9 @@
 package issues
 
 import (
+	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"os"
 	"testing"
 
@@ -35,4 +38,38 @@ func TestStoreCreds(t *testing.T) {
 	assert.Nil(t, err, "StoreCreds throws error")
 	assert.Equal(t, testutil.Readfile(credsFile), "testing\n")
 	os.Remove(credsFile)
+}
+
+func TestCredsPoll(t *testing.T) {
+	var errResp = url.Values{
+		"error": {"authorization_pending"},
+	}
+	var resp = url.Values{
+		"testing": {"success"},
+	}
+	const wantDc = "1234"
+	reqs := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		form := &r.Form
+		id := form.Get("client_id")
+		dc := form.Get("device_code")
+		gt := form.Get("grant_type")
+		assert.Equal(t, ClientId, id)
+		assert.Equal(t, wantDc, dc)
+		assert.Equal(t, pollGrant, gt)
+		if reqs == 0 {
+			// Simulate waiting for user input
+			w.Write([]byte(errResp.Encode()))
+			reqs++
+		} else {
+			w.Write([]byte(resp.Encode()))
+		}
+	}))
+	defer server.Close()
+
+	pollUrl = server.URL
+	v, err := CredsPoll(0, wantDc)
+	assert.Nil(t, err)
+	assert.Equal(t, resp, v)
 }

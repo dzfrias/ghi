@@ -18,6 +18,11 @@ const ClientId = "3cb4616362f3ae823872"
 
 var ConfigPath string
 
+// Modified during testing
+var pollUrl = "https://github.com/login/oauth/access_token"
+
+const pollGrant = "urn:ietf:params:oauth:grant-type:device_code"
+
 func init() {
 	home, err := os.UserHomeDir()
 	if err != nil {
@@ -29,12 +34,10 @@ func init() {
 
 // CredsPoll requests for the user's access token at the given interval (seconds)
 func CredsPoll(i int, code string) (url.Values, error) {
-	const pollUrl = "https://github.com/login/oauth/access_token"
-	const grantType = "urn:ietf:params:oauth:grant-type:device_code"
 	v := url.Values{
 		"client_id":   {ClientId},
 		"device_code": {code},
-		"grant_type":  {grantType},
+		"grant_type":  {pollGrant},
 	}
 	for {
 		// Send POST request and get the url encoded response as map
