@@ -73,3 +73,18 @@ func TestCredsPoll(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, resp, v)
 }
+
+func TestCredsPollExpiredToken(t *testing.T) {
+	const msg = "access token expired, try again"
+	var resp = url.Values{
+		"error": {"expired_token"},
+	}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(resp.Encode()))
+	}))
+	defer server.Close()
+
+	pollUrl = server.URL
+	_, err := CredsPoll(0, "none")
+	assert.Equal(t, msg, err.Error())
+}
