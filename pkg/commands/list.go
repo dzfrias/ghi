@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -16,6 +17,9 @@ func List(ctx *cli.Context) error {
 	var err error
 
 	page := ctx.Int("page")
+	if page < 1 {
+		return errors.New("page number must be greater than 0")
+	}
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
 		// Default query
 		result, err = issues.Search(currentRepo()+" is:open", page)
