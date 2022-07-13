@@ -30,14 +30,16 @@ var data = issues.IssuesSearchResult{
 var app = testutil.NewApp(List)
 
 func TestList(t *testing.T) {
-	got := testutil.CapStdout(&out, func() {
-		args := os.Args[0:1]
-		args = append(args, "list", "repo")
-		err := app.Run(args)
-		assert.Nil(t, err)
-	})
-	target := "1 issues:\n#1      TestUser Testing\n"
-	assert.Equal(t, target, got)
+	for _, arg := range []string{"repo", ""} {
+		got := testutil.CapStdout(&out, func() {
+			args := os.Args[0:1]
+			args = append(args, "list", arg)
+			err := app.Run(args)
+			assert.Nil(t, err)
+		})
+		target := "1 issues:\n#1      TestUser Testing\n"
+		assert.Equal(t, target, got)
+	}
 }
 
 func TestListBadPage(t *testing.T) {
