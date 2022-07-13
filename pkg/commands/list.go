@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -10,6 +11,9 @@ import (
 	"github.com/dzfrias/ghi/pkg/issues"
 	"github.com/urfave/cli/v2"
 )
+
+// Modified during testing
+var out io.Writer = os.Stdout
 
 // List lists the issues with an optional query
 func List(ctx *cli.Context) error {
@@ -30,14 +34,14 @@ func List(ctx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%d issues:\n", result.TotalCount)
+	fmt.Fprintf(out, "%d issues:\n", result.TotalCount)
 	for _, item := range result.Items {
-		fmt.Printf("#%-5d %9.9s %.55s\n",
+		fmt.Fprintf(out, "#%-5d %9.9s %.55s\n",
 			item.Number, item.User.Login, item.Title)
 	}
 	if len(result.Items) < result.TotalCount {
 		issNum := (20 * (page - 1)) + 1
-		fmt.Printf("(Showing issues %d-%d)\n", issNum, issNum+19)
+		fmt.Fprintf(out, "(Showing issues %d-%d)\n", issNum, issNum+19)
 	}
 
 	return nil

@@ -14,6 +14,7 @@ import (
 	"strconv"
 )
 
+// Modified during testing
 var IssuesURL = "https://api.github.com/search/issues"
 
 // Search queries the GitHub issue tracker.
