@@ -11,20 +11,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var data = issues.IssuesSearchResult{
-	TotalCount: 1,
-	Items: []*issues.Issue{
-		{
-			Number:  1,
-			HTMLURL: "none",
-			Title:   "Testing",
-			State:   "open",
-			User: &issues.User{
-				Login:   "TestUser",
-				HTMLURL: "none",
-			},
-		},
-	},
+var data issues.IssuesSearchResult
+
+func init() {
+	testutil.LoadJson("../../testdata/issues.json", &data)
 }
 
 var app = testutil.NewApp(List)
@@ -37,8 +27,8 @@ func TestList(t *testing.T) {
 			err := app.Run(args)
 			assert.Nil(t, err)
 		})
-		target := "1 issues:\n#1      TestUser Testing\n"
-		assert.Equal(t, target, got)
+		want := testutil.Readfile("./list_test_expected.txt")
+		assert.Equal(t, want, got)
 	}
 }
 

@@ -15,7 +15,7 @@ import (
 
 // SetupIssueServer sets up a local server that serves fake data, simulating
 // https://api.github.com/search/issues
-func SetupIssueServer(data interface{}) *httptest.Server {
+func SetupIssueServer(data any) *httptest.Server {
 	// Start a local HTTP server
 	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -23,7 +23,7 @@ func SetupIssueServer(data interface{}) *httptest.Server {
 		q := v.Get("q")
 		// Simulate invalid query
 		if q == "invalidRepo" {
-			w.WriteHeader(http.StatusInternalServerError)
+			w.WriteHeader(http.StatusUnprocessableEntity)
 			w.Write([]byte(""))
 			return
 		}
@@ -58,7 +58,7 @@ func NewApp(listf func(*cli.Context) error) *cli.App {
 	}
 }
 
-// Reads file, thowing a fatal error if the read fails
+// Reafile reads a file, thowing a fatal error if the read fails
 func Readfile(fname string) string {
 	b, err := ioutil.ReadFile(fname)
 	if err != nil {
@@ -66,4 +66,13 @@ func Readfile(fname string) string {
 	}
 
 	return string(b)
+}
+
+// LoadJson loads a json file into a struct
+func LoadJson(fname string, res any) {
+	b, err := ioutil.ReadFile(fname)
+	if err != nil {
+		log.Fatal(err)
+	}
+	json.Unmarshal(b, &res)
 }

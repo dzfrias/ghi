@@ -240,18 +240,6 @@
             },
             "created_at": "0001-01-01T00:00:00Z",
             "body": ""
-        },
-        {
-            "number": 21,
-            "html_url": "none",
-            "title": "Testing",
-            "state": "open",
-            "user": {
-                "login": "TestUser",
-                "html_url": "none"
-            },
-            "created_at": "0001-01-01T00:00:00Z",
-            "body": ""
         }
     ]
 }

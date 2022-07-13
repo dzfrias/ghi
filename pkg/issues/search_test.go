@@ -8,20 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var data = IssuesSearchResult{
-	TotalCount: 1,
-	Items: []*Issue{
-		{
-			Number:  1,
-			HTMLURL: "none",
-			Title:   "Testing",
-			State:   "open",
-			User: &User{
-				Login:   "TestUser",
-				HTMLURL: "none",
-			},
-		},
-	},
+var data IssuesSearchResult
+
+func init() {
+	testutil.LoadJson("../../testdata/issues.json", &data)
 }
 
 func TestSearch(t *testing.T) {
@@ -32,7 +22,9 @@ func TestSearch(t *testing.T) {
 
 func TestInvalidSearch(t *testing.T) {
 	_, err := Search("invalidRepo", 1)
-	assert.Error(t, err)
+	const want = "search failed: Invalid search terms or the repository has no issues"
+	assert.Equal(t, want, err.Error())
+	// assert.Error(t, err)
 }
 
 func TestMain(m *testing.M) {
