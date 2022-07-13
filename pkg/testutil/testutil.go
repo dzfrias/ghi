@@ -5,6 +5,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
 
@@ -54,4 +56,14 @@ func NewApp(listf func(*cli.Context) error) *cli.App {
 			},
 		},
 	}
+}
+
+// Reads file, thowing a fatal error if the read fails
+func Readfile(fname string) string {
+	b, err := ioutil.ReadFile(fname)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(b)
 }

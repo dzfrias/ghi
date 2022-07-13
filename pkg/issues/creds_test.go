@@ -1,11 +1,10 @@
 package issues
 
 import (
-	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 
+	"github.com/dzfrias/ghi/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,22 +26,13 @@ func TestStoreCredsNoConfigDir(t *testing.T) {
 	const newCreds = "./.config/ghi/TestCreds.txt"
 	err := StoreCreds("testing", newCreds)
 	assert.Nil(t, err, "StoreCreds with no config dir throws error")
-	assert.Equal(t, readfile(newCreds), "testing\n")
+	assert.Equal(t, testutil.Readfile(newCreds), "testing\n")
 	os.Remove(newCreds)
 }
 
 func TestStoreCreds(t *testing.T) {
 	err := StoreCreds("testing", credsFile)
 	assert.Nil(t, err, "StoreCreds throws error")
-	assert.Equal(t, readfile(credsFile), "testing\n")
+	assert.Equal(t, testutil.Readfile(credsFile), "testing\n")
 	os.Remove(credsFile)
-}
-
-func readfile(fname string) string {
-	b, err := ioutil.ReadFile(fname)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return string(b)
 }
