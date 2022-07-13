@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const credsFile = "./TestCreds.txt"
+const credsFile = "./testcreds.txt"
 
 func TestGetCreds(t *testing.T) {
 	creds, err := GetCreds("./testdata/TestCreds.txt")
@@ -23,7 +23,7 @@ func TestGetCredsNoneExist(t *testing.T) {
 }
 
 func TestStoreCredsNoConfigDir(t *testing.T) {
-	const newCreds = "./.config/ghi/TestCreds.txt"
+	const newCreds = "./.config/ghi/testcreds.txt"
 	err := StoreCreds("testing", newCreds)
 	assert.Nil(t, err, "StoreCreds with no config dir throws error")
 	assert.Equal(t, testutil.Readfile(newCreds), "testing\n")
