@@ -1,9 +1,13 @@
 package testutil
 
 import (
+	"bytes"
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
+
+	"github.com/urfave/cli/v2"
 )
 
 // SetupIssueServer sets up a local server that serves fake data, simulating
@@ -23,4 +27,30 @@ func SetupIssueServer(data interface{}) *httptest.Server {
 		json.NewEncoder(w).Encode(data)
 	}))
 	return s
+}
+
+// CapStdout captures the stdout of the provided function
+func CapStdout(out *io.Writer, f func()) string {
+	*out = new(bytes.Buffer)
+	f()
+	got := (*out).(*bytes.Buffer).String()
+	return got
+}
+
+// NewApp makes mock cli app (mirroring ghi's interface)
+func NewApp(listf func(*cli.Context) error) *cli.App {
+	return &cli.App{
+		Commands: []*cli.Command{
+			{
+				Name:   "list",
+				Action: listf,
+				Flags: []cli.Flag{
+					&cli.IntFlag{
+						Name:  "page",
+						Value: 1,
+					},
+				},
+			},
+		},
+	}
 }

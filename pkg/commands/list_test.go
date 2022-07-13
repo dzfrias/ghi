@@ -1,14 +1,12 @@
 package commands
 
 import (
-	"bytes"
 	"os"
 	"testing"
 
 	"github.com/dzfrias/ghi/pkg/issues"
 	"github.com/dzfrias/ghi/pkg/testutil"
 	"github.com/stretchr/testify/assert"
-	"github.com/urfave/cli/v2"
 )
 
 var data = issues.IssuesSearchResult{
@@ -27,23 +25,10 @@ var data = issues.IssuesSearchResult{
 	},
 }
 
-var app = &cli.App{
-	Commands: []*cli.Command{
-		{
-			Name:   "list",
-			Action: List,
-			Flags: []cli.Flag{
-				&cli.IntFlag{
-					Name:  "page",
-					Value: 1,
-				},
-			},
-		},
-	},
-}
+var app = testutil.NewApp(List)
 
 func TestList(t *testing.T) {
-	got := capStdout(func() {
+	got := testutil.CapStdout(&out, func() {
 		args := os.Args[0:1]
 		args = append(args, "list", "repo")
 		err := app.Run(args)
@@ -55,7 +40,7 @@ func TestList(t *testing.T) {
 
 func TestListBadPage(t *testing.T) {
 	args := os.Args[0:1]
-	args = append(args, "list", "-p", "0", "repo")
+	args = append(args, "list", "--page", "0", "repo")
 	err := app.Run(args)
 	assert.Error(t, err)
 }
@@ -65,12 +50,4 @@ func TestMain(m *testing.M) {
 	defer server.Close()
 	issues.IssuesURL = server.URL
 	os.Exit(m.Run())
-}
-
-// capStdout captures the stdout of the provided function
-func capStdout(f func()) string {
-	out = new(bytes.Buffer)
-	f()
-	got := out.(*bytes.Buffer).String()
-	return got
 }
