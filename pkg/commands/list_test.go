@@ -63,8 +63,13 @@ func TestCurrentRepoNoOrigin(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
+	code := runTests(m)
+	os.Exit(code)
+}
+
+func runTests(m *testing.M) int {
 	server := testutil.SetupIssueServer(data)
 	defer server.Close()
 	issues.IssuesURL = server.URL
-	os.Exit(m.Run())
+	return m.Run()
 }

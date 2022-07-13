@@ -36,8 +36,13 @@ func TestInvalidSearch(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
+	code := runTests(m)
+	os.Exit(code)
+}
+
+func runTests(m *testing.M) int {
 	server := testutil.SetupIssueServer(data)
 	defer server.Close()
 	IssuesURL = server.URL
-	os.Exit(m.Run())
+	return m.Run()
 }

@@ -11,7 +11,7 @@ import (
 const credsFile = "./testcreds.txt"
 
 func TestGetCreds(t *testing.T) {
-	creds, err := GetCreds("./testdata/TestCreds.txt")
+	creds, err := GetCreds("./creds_testdata.txt")
 	assert.Equal(t, creds, "testing", "does not read creds correctly")
 	assert.Nil(t, err, "throws an error")
 }
