@@ -43,14 +43,21 @@ var app = &cli.App{
 }
 
 func TestList(t *testing.T) {
-	out = new(bytes.Buffer)
-	args := os.Args[0:1]
-	args = append(args, "list", "repo")
-	err := app.Run(args)
-	got := out.(*bytes.Buffer).String()
+	got := capStdout(func() {
+		args := os.Args[0:1]
+		args = append(args, "list", "repo")
+		err := app.Run(args)
+		assert.Nil(t, err)
+	})
 	target := "1 issues:\n#1      TestUser Testing\n"
 	assert.Equal(t, target, got)
-	assert.Nil(t, err)
+}
+
+func TestListBadPage(t *testing.T) {
+	args := os.Args[0:1]
+	args = append(args, "list", "-p", "0", "repo")
+	err := app.Run(args)
+	assert.Error(t, err)
 }
 
 func TestMain(m *testing.M) {
@@ -58,4 +65,12 @@ func TestMain(m *testing.M) {
 	defer server.Close()
 	issues.IssuesURL = server.URL
 	os.Exit(m.Run())
+}
+
+// capStdout captures the stdout of the provided function
+func capStdout(f func()) string {
+	out = new(bytes.Buffer)
+	f()
+	got := out.(*bytes.Buffer).String()
+	return got
 }
