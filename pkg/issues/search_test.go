@@ -24,7 +24,6 @@ func TestInvalidSearch(t *testing.T) {
 	_, err := Search("invalidRepo", 1)
 	const want = "search failed: Invalid search terms or the repository has no issues"
 	assert.Equal(t, want, err.Error())
-	// assert.Error(t, err)
 }
 
 func TestMain(m *testing.M) {
