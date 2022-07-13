@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -46,7 +46,8 @@ func TestCurrentRepo(t *testing.T) {
 func TestCurrentRepoNoOrigin(t *testing.T) {
 	ex, err := os.Executable()
 	if err != nil {
-		log.Fatalf("Could not get user home directory: %v", err)
+		msg := fmt.Sprintf("Could not get user home directory: %v", err)
+		panic(msg)
 	}
 	os.Chdir(filepath.Dir(ex))
 	assert.Equal(t, "", currentRepo())

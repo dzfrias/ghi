@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/http/httptest"
 
@@ -62,7 +61,7 @@ func NewApp(listf func(*cli.Context) error) *cli.App {
 func Readfile(fname string) string {
 	b, err := ioutil.ReadFile(fname)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	return string(b)
@@ -72,7 +71,7 @@ func Readfile(fname string) string {
 func LoadJson(fname string, res any) {
 	b, err := ioutil.ReadFile(fname)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	json.Unmarshal(b, &res)
 }
