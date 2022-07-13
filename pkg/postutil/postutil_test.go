@@ -19,7 +19,7 @@ func TestPostParse(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		p := r.Form.Get("testing")
-		assert.NotEqual(t, p, "")
+		assert.NotEmpty(t, p)
 		w.Write([]byte(resp.Encode()))
 	}))
 	defer server.Close()
