@@ -16,7 +16,7 @@ func PostParse(s string, data url.Values) (url.Values, error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("login request failed: %s", resp.Status)
+		return nil, fmt.Errorf("POST request failed: %s", resp.Status)
 	}
 
 	// Parse url encoded key-value pairs

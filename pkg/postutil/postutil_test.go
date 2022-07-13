@@ -28,3 +28,16 @@ func TestPostParse(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, v, resp)
 }
+
+func TestPostParseFail(t *testing.T) {
+	// Start a local HTTP server
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(""))
+	}))
+	defer server.Close()
+
+	const want = "POST request failed: 500 Internal Server Error"
+	_, err := PostParse(server.URL, url.Values{"none": {"none"}})
+	assert.Equal(t, want, err.Error())
+}
