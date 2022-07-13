@@ -2,7 +2,6 @@ package issues
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -48,14 +47,12 @@ func CredsPoll(i int, code string) (url.Values, error) {
 		}
 		switch respVals.Get("error") {
 		case "authorization_pending":
-			continue
+			time.Sleep(time.Second * time.Duration(i))
 		case "expired_token":
-			fmt.Println("hi")
 			return nil, errors.New("access token expired, try again")
 		default:
 			return respVals, nil
 		}
-		time.Sleep(time.Second * time.Duration(i))
 	}
 }
 
