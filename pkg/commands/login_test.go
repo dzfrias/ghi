@@ -55,6 +55,34 @@ func TestLoginCredsExist(t *testing.T) {
 	})
 	want := "Credentials already exist.\n"
 	assert.Equal(t, want, got)
+	os.Remove(credsPath)
+}
+
+func TestLoginCredsExistForce(t *testing.T) {
+	const credsPath = "./creds.txt"
+	_, err := os.Create(credsPath)
+	if err != nil {
+		panic(err)
+	}
+
+	loginS := setupLoginServer(t)
+	loginUrl = loginS.URL
+	pollS := setupPollServer(t)
+	issues.PollUrl = pollS.URL
+	issues.ConfigPath = credsPath
+	defer pollS.Close()
+	defer loginS.Close()
+
+	got := testutil.CapStdout(&out, func() {
+		args := os.Args[0:1]
+		args = append(args, "login", "--force")
+		err := app.Run(args)
+		assert.Nil(t, err)
+	})
+	want := fmt.Sprintf("Go to https://github.com/login/device and enter this code: %s\n", userCode)
+	assert.Equal(t, want, got)
+	assert.Equal(t, accessToken+"\n", testutil.Readfile(credsPath))
+	os.Remove(credsPath)
 }
 
 func setupLoginServer(t *testing.T) *httptest.Server {
