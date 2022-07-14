@@ -1,7 +1,9 @@
-// Package postutil provides an easy http POST request abstraction
+// Package postutil provides easy http POST request abstractions
 package postutil
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -25,6 +27,17 @@ func PostParse(s string, data url.Values) (url.Values, error) {
 		return nil, err
 	}
 	return vals, nil
+}
+
+// EncodeMap encodes a map into a json bytes buffer
+func EncodeMap(m map[string]string) (*bytes.Buffer, error) {
+	buf := &bytes.Buffer{}
+	encoder := json.NewEncoder(buf)
+	err := encoder.Encode(m)
+	if err != nil {
+		return buf, err
+	}
+	return buf, nil
 }
 
 // parseQuery returns a map of key-value pairs in a url query

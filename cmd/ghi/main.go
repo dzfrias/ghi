@@ -44,6 +44,12 @@ func main() {
 					},
 				},
 			},
+			{
+				Name:      "close",
+				Usage:     "Closes an issue (needs login)",
+				UsageText: "ghi close [command options] <issue> <repo>",
+				Action:    commands.Close,
+			},
 		},
 	}
 
