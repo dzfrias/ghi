@@ -20,9 +20,8 @@ func TestGetCreds(t *testing.T) {
 }
 
 func TestGetCredsNoneExist(t *testing.T) {
-	const target = "no credentials. Run `ghi auth` to access this feature"
 	_, err := GetCreds(credsFile)
-	assert.Equal(t, err.Error(), target, "no credsFile does not throw error")
+	assert.ErrorIs(t, err, ErrNoCreds)
 }
 
 func TestStoreCredsNoConfigDir(t *testing.T) {

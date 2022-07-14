@@ -23,6 +23,8 @@ var PollUrl = "https://github.com/login/oauth/access_token"
 
 const pollGrant = "urn:ietf:params:oauth:grant-type:device_code"
 
+var ErrNoCreds = errors.New("no credentials. Run `ghi auth` to access this feature")
+
 func init() {
 	home, err := os.UserHomeDir()
 	if err != nil {
@@ -79,7 +81,7 @@ func StoreCreds(creds string, loc string) error {
 // GetCreds gets the user's authorized credentials
 func GetCreds(fname string) (string, error) {
 	if _, err := os.Stat(fname); errors.Is(err, os.ErrNotExist) {
-		return "", errors.New("no credentials. Run `ghi auth` to access this feature")
+		return "", ErrNoCreds
 	}
 
 	creds, err := ioutil.ReadFile(fname)

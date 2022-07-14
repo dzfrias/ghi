@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/dzfrias/ghi/pkg/issues"
@@ -14,7 +13,7 @@ func Close(ctx *cli.Context) error {
 
 	issNum := args.Get(0)
 	if issNum == "" {
-		return errors.New("not enough args to `close`")
+		return errNotEnoughArgs{"close"}
 	}
 	fullRepo := args.Get(1)
 	if fullRepo == "" {
