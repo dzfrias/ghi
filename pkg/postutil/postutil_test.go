@@ -41,3 +41,10 @@ func TestPostParseFail(t *testing.T) {
 	_, err := PostParse(server.URL, url.Values{"none": {"none"}})
 	assert.Equal(t, want, err.Error())
 }
+
+func TestEncodeMap(t *testing.T) {
+	m := map[string]string{"testing": "test"}
+	b, err := EncodeMap(m)
+	assert.Nil(t, err)
+	assert.Equal(t, `{"testing":"test"}`+"\n", b.String())
+}
