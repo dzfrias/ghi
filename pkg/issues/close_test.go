@@ -28,7 +28,7 @@ func TestClose(t *testing.T) {
 	}))
 	defer server.Close()
 
-	closeUrl = server.URL
+	CloseUrl = server.URL
 	ConfigPath = "./creds_testdata.txt"
 	err := CloseIssue(issNum, user, repo)
 	assert.Nil(t, err)

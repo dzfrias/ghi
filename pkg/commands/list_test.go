@@ -20,6 +20,7 @@ func init() {
 var app = testutil.NewApp(
 	List,
 	Login,
+	Close,
 )
 
 func TestList(t *testing.T) {

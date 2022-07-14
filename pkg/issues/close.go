@@ -8,7 +8,7 @@ import (
 )
 
 // Modified during testing
-var closeUrl = "https://api.github.com/repos"
+var CloseUrl = "https://api.github.com/repos"
 
 // CloseIssue closes a GitHub issue
 func CloseIssue(id, owner, repo string) error {
@@ -17,7 +17,7 @@ func CloseIssue(id, owner, repo string) error {
 		panic("error encoding map for closing issue")
 	}
 
-	reqUrl := fmt.Sprintf("%s/%s/%s/issues/%s", closeUrl, owner, repo, id)
+	reqUrl := fmt.Sprintf("%s/%s/%s/issues/%s", CloseUrl, owner, repo, id)
 	req, err := http.NewRequest(http.MethodPatch, reqUrl, buf)
 	if err != nil {
 		return err
