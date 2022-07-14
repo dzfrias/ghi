@@ -10,13 +10,15 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Modified during testing
+var loginUrl = "https://github.com/login/device/code"
+
 // Login puts the user through the authentication process to store credentials
 func Login(ctx *cli.Context) error {
 	if _, err := issues.GetCreds(issues.ConfigPath); err == nil && !ctx.Bool("force") {
-		fmt.Println("Credentials already exist.")
+		fmt.Fprintln(out, "Credentials already exist.")
 		return nil
 	}
-	const loginUrl = "https://github.com/login/device/code"
 
 	data := url.Values{
 		"client_id": {issues.ClientId},
@@ -28,7 +30,7 @@ func Login(ctx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Go to https://github.com/login/device and enter this code: %s\n", vals.Get("user_code"))
+	fmt.Fprintf(out, "Go to https://github.com/login/device and enter this code: %s\n", vals.Get("user_code"))
 
 	i, err := strconv.Atoi(vals.Get("interval"))
 	if err != nil {

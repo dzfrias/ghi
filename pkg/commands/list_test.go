@@ -17,7 +17,10 @@ func init() {
 	testutil.LoadJson("../../testdata/issues.json", &data)
 }
 
-var app = testutil.NewApp(List)
+var app = testutil.NewApp(
+	List,
+	Login,
+)
 
 func TestList(t *testing.T) {
 	for _, arg := range []string{"repo", ""} {

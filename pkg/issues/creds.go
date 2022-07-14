@@ -19,7 +19,7 @@ const ClientId = "3cb4616362f3ae823872"
 var ConfigPath string
 
 // Modified during testing
-var pollUrl = "https://github.com/login/oauth/access_token"
+var PollUrl = "https://github.com/login/oauth/access_token"
 
 const pollGrant = "urn:ietf:params:oauth:grant-type:device_code"
 
@@ -41,7 +41,7 @@ func CredsPoll(i int, code string) (url.Values, error) {
 	}
 	for {
 		// Send POST request and get the url encoded response as map
-		respVals, err := postutil.PostParse(pollUrl, v)
+		respVals, err := postutil.PostParse(PollUrl, v)
 		if err != nil {
 			return nil, err
 		}

@@ -68,7 +68,7 @@ func TestCredsPoll(t *testing.T) {
 	}))
 	defer server.Close()
 
-	pollUrl = server.URL
+	PollUrl = server.URL
 	v, err := CredsPoll(0, wantDc)
 	assert.Nil(t, err)
 	assert.Equal(t, resp, v)
@@ -84,7 +84,7 @@ func TestCredsPollExpiredToken(t *testing.T) {
 	}))
 	defer server.Close()
 
-	pollUrl = server.URL
+	PollUrl = server.URL
 	_, err := CredsPoll(0, "none")
 	assert.Equal(t, msg, err.Error())
 }

@@ -40,7 +40,7 @@ func CapStdout(out *io.Writer, f func()) string {
 }
 
 // NewApp makes mock cli app (mirroring ghi's interface)
-func NewApp(listf func(*cli.Context) error) *cli.App {
+func NewApp(listf, loginf func(*cli.Context) error) *cli.App {
 	return &cli.App{
 		Commands: []*cli.Command{
 			{
@@ -50,6 +50,16 @@ func NewApp(listf func(*cli.Context) error) *cli.App {
 					&cli.IntFlag{
 						Name:  "page",
 						Value: 1,
+					},
+				},
+			},
+			{
+				Name:   "login",
+				Action: loginf,
+				Flags: []cli.Flag{
+					&cli.BoolFlag{
+						Name:  "force",
+						Value: false,
 					},
 				},
 			},
