@@ -1,9 +1,7 @@
 package commands
 
 import (
-	"fmt"
 	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/dzfrias/ghi/pkg/issues"
@@ -63,20 +61,6 @@ func TestListBadPage(t *testing.T) {
 	args = append(args, "list", "--page", "0", "repo")
 	err := app.Run(args)
 	assert.Error(t, err)
-}
-
-func TestCurrentRepo(t *testing.T) {
-	assert.Equal(t, "repo:dzfrias/ghi", currentRepo())
-}
-
-func TestCurrentRepoNoOrigin(t *testing.T) {
-	ex, err := os.Executable()
-	if err != nil {
-		msg := fmt.Sprintf("Could not get user home directory: %v", err)
-		panic(msg)
-	}
-	os.Chdir(filepath.Dir(ex))
-	assert.Equal(t, "", currentRepo())
 }
 
 func TestMain(m *testing.M) {

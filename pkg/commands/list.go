@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/dzfrias/ghi/pkg/issues"
@@ -25,8 +24,9 @@ func List(ctx *cli.Context) error {
 		return errors.New("page number must be greater than 0")
 	}
 	if arg1 := ctx.Args().Get(0); arg1 == "" {
+		curRep := "repo:" + currentRepo().String()
 		// Default query
-		result, err = issues.Search(currentRepo()+" is:open", page)
+		result, err = issues.Search(curRep+" is:open", page)
 	} else {
 		result, err = issues.Search(
 			strings.Join(ctx.Args().Slice(), " "), page)
@@ -45,34 +45,4 @@ func List(ctx *cli.Context) error {
 	}
 
 	return nil
-}
-
-// currentRepo gets the current repo and puts it into the query format
-func currentRepo() string {
-	pwd, err := os.Getwd()
-	if err != nil {
-		return ""
-	}
-
-	_, err = exec.Command(
-		"sh", "-c", fmt.Sprintf("cd %s; git status", pwd),
-	).Output()
-	if err != nil {
-		return ""
-	}
-
-	// Get origin url in cwd
-	ori, err := exec.Command(
-		"sh",
-		"-c",
-		fmt.Sprintf("cd %s; git config --get remote.origin.url", pwd),
-	).Output()
-	if err != nil {
-		return ""
-	}
-
-	repo := strings.TrimPrefix(string(ori), "https://github.com/")
-
-	// Strip the '.git' at the end
-	return "repo:" + repo[:len(repo)-5]
 }

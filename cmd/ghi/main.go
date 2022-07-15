@@ -50,6 +50,12 @@ func main() {
 				UsageText: "ghi close [command options] <issue> <repo>",
 				Action:    commands.Close,
 			},
+			{
+				Name:      "open",
+				Usage:     "Opens an issue (needs login)",
+				UsageText: "ghi open [command options] <repo>",
+				Action:    commands.Open,
+			},
 		},
 	}
 
