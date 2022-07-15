@@ -13,25 +13,33 @@ import (
 	"strings"
 )
 
+// errNotEnoughArgs is an error that is associated with a command, specifically
+// thrown when the user does not provide the appriopriate amount of positional
+// arguments to a command.
 type errNotEnoughArgs struct {
 	command string
 }
 
+// Error() returns the error in a specific format
 func (e errNotEnoughArgs) Error() string {
 	return fmt.Sprintf("not enough args to command `%s`", e.command)
 }
 
 var errInvalidRepo = errors.New("invalid repo name, must have a '/'")
 
+// repo represents a GitHub repository
 type repo struct {
 	Owner string
 	Name  string
 }
 
+// String joins the repo by a "/"
 func (r repo) String() string {
 	return strings.Join([]string{r.Owner, r.Name}, "/")
 }
 
+// newRepo creates a repo struct from a string, splitting by the "/". If an
+// invalid repository is given, errInvalidRepo is returned.
 func newRepo(fullRepo string) (repo, error) {
 	split := strings.Split(fullRepo, "/")
 	if len(split) != 2 {
@@ -44,7 +52,7 @@ func newRepo(fullRepo string) (repo, error) {
 	return repo{o, r}, nil
 }
 
-// currentRepo gets the current repo the user is in
+// currentRepo gets the current repo the user is in in the form of a repo
 func currentRepo() repo {
 	var r repo
 
