@@ -24,6 +24,29 @@ var app = testutil.NewApp(
 )
 
 func TestList(t *testing.T) {
+	const expected = `21 issues:
+#1      TestUser Testing
+#2      TestUser Testing
+#3      TestUser Testing
+#4      TestUser Testing
+#5      TestUser Testing
+#6      TestUser Testing
+#7      TestUser Testing
+#8      TestUser Testing
+#9      TestUser Testing
+#10     TestUser Testing
+#11     TestUser Testing
+#12     TestUser Testing
+#13     TestUser Testing
+#14     TestUser Testing
+#15     TestUser Testing
+#16     TestUser Testing
+#17     TestUser Testing
+#18     TestUser Testing
+#19     TestUser Testing
+#20     TestUser Testing
+(Showing issues 1-20)
+`
 	for _, arg := range []string{"repo", ""} {
 		got := testutil.CapStdout(&out, func() {
 			args := os.Args[0:1]
@@ -31,8 +54,7 @@ func TestList(t *testing.T) {
 			err := app.Run(args)
 			assert.Nil(t, err)
 		})
-		want := testutil.Readfile("./list_test_expected.txt")
-		assert.Equal(t, want, got)
+		assert.Equal(t, expected, got)
 	}
 }
 

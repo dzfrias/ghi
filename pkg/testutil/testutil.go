@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
 
 	"github.com/urfave/cli/v2"
 )
@@ -88,4 +89,17 @@ func LoadJson(fname string, res any) {
 		panic(err)
 	}
 	json.Unmarshal(b, &res)
+}
+
+func MakeCredsFile(name string) {
+	f, err := os.Create(name)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	_, err = f.WriteString("testing\n")
+	if err != nil {
+		panic(err)
+	}
 }

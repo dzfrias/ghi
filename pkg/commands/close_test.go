@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/dzfrias/ghi/pkg/issues"
+	"github.com/dzfrias/ghi/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,8 +33,11 @@ func TestClose(t *testing.T) {
 		}))
 		defer server.Close()
 
+		const credsFile = "test_creds.txt"
+		testutil.MakeCredsFile(credsFile)
+		defer os.Remove(credsFile)
 		issues.CloseUrl = server.URL
-		issues.ConfigPath = "test_creds.txt"
+		issues.ConfigPath = credsFile
 
 		args := os.Args[0:1]
 		args = append(args, "close", issNum, arg)

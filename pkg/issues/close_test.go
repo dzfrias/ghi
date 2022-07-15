@@ -4,9 +4,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 
+	"github.com/dzfrias/ghi/pkg/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -30,6 +32,8 @@ func TestClose(t *testing.T) {
 
 	CloseUrl = server.URL
 	ConfigPath = "./creds_testdata.txt"
+	testutil.MakeCredsFile(ConfigPath)
+	defer os.Remove(ConfigPath)
 	err := CloseIssue(issNum, user, repo)
 	assert.Nil(t, err)
 }
