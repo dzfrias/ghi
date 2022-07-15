@@ -21,19 +21,8 @@ type issueFile struct {
 	Cont  string
 }
 
-// Open opens in issue in GitHub after prompting the user to create one
-func Open(owner, repo string) error {
-	f, err := os.CreateTemp(".", "ghi_temp")
-	if err != nil {
-		panic("error creating temporary file")
-	}
-	fname := f.Name()
-	defer os.Remove(fname)
-
-	err = openEditor(fname)
-	if err != nil {
-		return ErrBadTempFile
-	}
+// openFrom opens in issue in GitHub from a file of the format TITLE\nBODY
+func openFrom(fname, owner, repo string) error {
 	iss, err := readIssF(fname)
 	if err != nil {
 		return ErrBadTempFile
@@ -56,6 +45,28 @@ func Open(owner, repo string) error {
 	return nil
 }
 
+// Open opens in issue in GitHub after prompting the user to create one
+func Open(owner, repo string) error {
+	f, err := os.Create("./ghi_temp")
+	if err != nil {
+		panic("error creating temporary file")
+	}
+	fname := f.Name()
+	defer os.Remove(fname)
+
+	err = openEditor(fname)
+	if err != nil {
+		return ErrBadTempFile
+	}
+
+	err = openFrom(fname, owner, repo)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// openReq returns a *http.Request to open an issue based on a file
 func openReq(reqUrl string, iss issueFile) (*http.Request, error) {
 	vals := map[string]string{
 		"title": iss.Title,
