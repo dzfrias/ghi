@@ -15,7 +15,7 @@ const credsFile = "./testcreds.txt"
 
 func TestGetCreds(t *testing.T) {
 	newF := "./creds_test.txt"
-	testutil.MakeCredsFile(newF)
+	testutil.MakeDummyFile(newF)
 	defer os.Remove(newF)
 	creds, err := GetCreds(newF)
 	assert.Equal(t, creds, "testing", "does not read creds correctly")

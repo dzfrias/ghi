@@ -34,7 +34,7 @@ func TestClose(t *testing.T) {
 		defer server.Close()
 
 		const credsFile = "test_creds.txt"
-		testutil.MakeCredsFile(credsFile)
+		testutil.MakeDummyFile(credsFile)
 		defer os.Remove(credsFile)
 		issues.CloseUrl = server.URL
 		issues.ConfigPath = credsFile

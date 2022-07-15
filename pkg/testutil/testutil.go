@@ -91,7 +91,8 @@ func LoadJson(fname string, res any) {
 	json.Unmarshal(b, &res)
 }
 
-func MakeCredsFile(name string) {
+// MakeDummyFile creates a file with fake data in it
+func MakeDummyFile(name string) {
 	f, err := os.Create(name)
 	if err != nil {
 		panic(err)
