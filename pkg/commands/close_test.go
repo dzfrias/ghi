@@ -19,7 +19,7 @@ func TestClose(t *testing.T) {
 	const repo = "ghi"
 
 	fullrepo := strings.Join([]string{user, repo}, "/")
-	for _, arg := range []string{fullrepo, ""} {
+	for _, arg := range []string{fullrepo} {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			auth := r.Header.Get("Authorization")
 			assert.Equal(t, "token testing", auth)

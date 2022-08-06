@@ -15,9 +15,9 @@ func TestErrNotEnoughArgs(t *testing.T) {
 	assert.Equal(t, err.Error(), want)
 }
 
-func TestCurrentRepo(t *testing.T) {
-	assert.Equal(t, repo{"dzfrias", "ghi"}, currentRepo())
-}
+// func TestCurrentRepo(t *testing.T) {
+// 	assert.Equal(t, repo{"dzfrias", "ghi"}, currentRepo())
+// }
 
 func TestCurrentRepoNoOrigin(t *testing.T) {
 	ex, err := os.Executable()
